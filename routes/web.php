@@ -21,3 +21,12 @@ Route::get('hello', function () {
 
 Route::get('/test', 'TestController@test');
 Route::get('/test2', 'TestController@test2');
+Route::post('/whoami','WhatsMyNameController@index'); 
+Route::get('/askme', function () { return view('whoami'); });
+Route::get('/login', function () { return view('login'); });
+Route::post('/dologin','LoginController@index'); 
+Route::get('/login2', function ()
+{
+    return view('login2');
+});
+
