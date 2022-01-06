@@ -3,17 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Models\UserModel;
 use App\Services\Business\SecurityService;
 
-
-class LoginController extends Controller
+class Login3Controller extends Controller
 {
     public function index(Request $request)
     {
-        Log::info("Entering LoginController::index()");
-        
         // Usage of path method
         $path = $request->path();
         echo 'Path Method: '.$path;
@@ -29,9 +25,11 @@ class LoginController extends Controller
         echo 'URL method: '.$url;
         echo '<br>';
         
+        
+        $this->validateForm($request);
+        
         $username = $request->input('username');
         $password = $request->input('password');
-        Log::info("Parameters are: ",array("username" => $username , "password" => $password));
         echo "Your name is: " . $username . " " . $password;
         echo '<br>';
         
@@ -41,16 +39,24 @@ class LoginController extends Controller
         
         if ($security->login($data)) {
             $data = ['username' => $username, 'password' => $password];
-            Log::info("Exit LoginController::index() with login passing");
             return view('loginPassed')->with($data);
         }else {
             echo 'Login Fail';
-            Log::info("Exit LoginController::index() with login failing");
-            return view('login');
+            return view('login3');
             }
            
         
         
         
     }
+    private function validateForm(Request $request)
+    {
+        // Setup Data Validation Rules for Login Form
+        $rules = ['username' => 'Required | Between:4,10 | Alpha',
+            'password' => 'Required | Between:4,10'];
+        
+        // Run Data Validation Rules
+        $this->validate($request, $rules);
+    }
+    
 }

@@ -31,9 +31,11 @@ class SecurityDAO {
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
                 if ($row["USERNAME"] == $user && $row["PASSWORD"] == $pass) {
+                    $this->getConn()->close();
                     return true;
                 }
             }
+            $this->getConn()->close();
             return false;
         }
         
